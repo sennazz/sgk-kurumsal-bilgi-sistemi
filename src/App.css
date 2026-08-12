@@ -1444,3 +1444,38 @@ select {
     grid-template-columns: 1fr 1fr;
   }
 }
+/* DASHBOARD KART ETKİLEŞİMLERİ */
+
+.dashboard-stats .stat-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-stats .stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+
+/* KURUMSAL YAPI KARTI */
+
+.dashboard-section .quick-info-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-section .quick-info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+
+/* SON HABERLER */
+
+.recent-news-item {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recent-news-item:hover {
+  transform: translateX(4px);
+}
