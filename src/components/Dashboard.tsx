@@ -1,7 +1,11 @@
 import { organizationUnits } from "../data/organization"
 import { newsItems } from "../data/news"
 
-function Dashboard() {
+function Dashboard({
+  onNavigate,
+}: {
+  onNavigate: (page: string) => void
+}) {
   const newsTypeCounts = newsItems.reduce(
     (counts, news) => {
       counts[news.type] = (counts[news.type] || 0) + 1
@@ -23,7 +27,8 @@ function Dashboard() {
         <h2>Genel Bakış</h2>
 
         <p>
-          SGK kurumsal bilgi sistemindeki güncel verilere genel bakış.
+          SGK kurumsal bilgi sistemindeki güncel verilere
+          genel bakış.
         </p>
       </div>
 
@@ -32,7 +37,12 @@ function Dashboard() {
 
       <div className="dashboard-stats">
 
-        <div className="stat-card">
+        {/* TOPLAM HABER */}
+
+        <div
+          className="stat-card"
+          onClick={() => onNavigate("Haberler")}
+        >
           <div className="stat-icon">▤</div>
 
           <div>
@@ -47,7 +57,12 @@ function Dashboard() {
         </div>
 
 
-        <div className="stat-card">
+        {/* KURUMSAL BİRİM */}
+
+        <div
+          className="stat-card"
+          onClick={() => onNavigate("Kurumsal Yapı")}
+        >
           <div className="stat-icon">▦</div>
 
           <div>
@@ -78,7 +93,8 @@ function Dashboard() {
             <h2>Haber Türlerine Göre Dağılım</h2>
 
             <p>
-              Sistemde bulunan haberlerin türlerine göre dağılımı.
+              Sistemde bulunan haberlerin türlerine göre
+              dağılımı.
             </p>
           </div>
 
@@ -158,14 +174,19 @@ function Dashboard() {
           </div>
 
 
-          <div className="quick-info-card">
+          <div
+            className="quick-info-card"
+            onClick={() => onNavigate("Kurumsal Yapı")}
+          >
 
             <span className="quick-icon">
               📊
             </span>
 
             <div>
-              <strong>{organizationUnits.length} Kurumsal Birim</strong>
+              <strong>
+                {organizationUnits.length} Kurumsal Birim
+              </strong>
 
               <p>
                 SGK'nın organizasyon yapısındaki
@@ -198,6 +219,13 @@ function Dashboard() {
             </p>
           </div>
 
+          <button
+            className="text-button"
+            onClick={() => onNavigate("Haberler")}
+          >
+            Tüm Haberleri Gör →
+          </button>
+
         </div>
 
 
@@ -208,6 +236,7 @@ function Dashboard() {
             <div
               className="recent-news-item"
               key={news.id}
+              onClick={() => onNavigate("Haberler")}
             >
 
               <div className="recent-news-date">

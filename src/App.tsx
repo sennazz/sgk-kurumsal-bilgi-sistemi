@@ -50,7 +50,7 @@ function App() {
 {activePage === "Ana Sayfa" && (
 
   <>
-   <Dashboard />
+   <Dashboard onNavigate={setActivePage}/>
        </>
 )}
 
