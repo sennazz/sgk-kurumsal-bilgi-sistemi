@@ -5,6 +5,7 @@ import { newsItems } from "./data/news"
 import "./App.css"
 import Header from "./components/Header"
 import Sidebar from "./components/Sidebar"
+import Dashboard from "./components/Dashboard"
 
 function App() {
   const [activePage, setActivePage] = useState("Ana Sayfa")
@@ -46,193 +47,14 @@ function App() {
         <main className="content">
 
           {/* ANA SAYFA */}
-
 {activePage === "Ana Sayfa" && (
+
   <>
-    <div className="dashboard-welcome">
-      <div>
-        <span className="dashboard-eyebrow">
-          KURUMSAL BİLGİ SİSTEMİ
-        </span>
-
-        <h2>Hoş Geldiniz</h2>
-
-        <p>
-          Sosyal Güvenlik Kurumu kurumsal bilgi,
-          haber ve organizasyon arşivine genel bakış.
-        </p>
-      </div>
-
-      <div className="dashboard-date">
-        <span>Durum</span>
-        <strong>● Sistem Aktif</strong>
-      </div>
-    </div>
-
-
-    <div className="dashboard-stats">
-
-      <div className="stat-card">
-        <div className="stat-icon">▦</div>
-
-        <div>
-          <div className="stat-number">
-            {organizationUnits.length}
-          </div>
-
-          <div className="stat-label">
-            Kurumsal Birim
-          </div>
-        </div>
-      </div>
-
-
-      <div className="stat-card">
-        <div className="stat-icon">▤</div>
-
-        <div>
-          <div className="stat-number">
-            {newsItems.length}
-          </div>
-
-          <div className="stat-label">
-            Haber
-          </div>
-        </div>
-      </div>
-
-
-      <div className="stat-card">
-        <div className="stat-icon">!</div>
-
-        <div>
-          <div className="stat-number">
-            —
-          </div>
-
-          <div className="stat-label">
-            Duyuru
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-
-    <section className="dashboard-section">
-
-      <div className="section-heading">
-        <div>
-          <span className="section-eyebrow">
-            KURUMSAL YAPI
-          </span>
-
-          <h2>Kurumsal Yapı</h2>
-
-          <p>
-            SGK'nın organizasyon yapısına genel bakış.
-          </p>
-        </div>
-
-        <button
-          className="view-all-button"
-          onClick={() =>
-            setActivePage("Kurumsal Yapı")
-          }
-        >
-          Tümünü Gör →
-        </button>
-      </div>
-
-
-      <div className="quick-info-grid">
-
-        <div className="quick-info-card">
-          <span className="quick-icon">🏢</span>
-
-          <div>
-            <strong>Organizasyon Birimleri</strong>
-
-            <p>
-              Kurumun mevcut birimlerini ve
-              organizasyon yapısını görüntüleyin.
-            </p>
-          </div>
-        </div>
-
-
-        <div className="quick-info-card">
-          <span className="quick-icon">📰</span>
-
-          <div>
-            <strong>Haber Arşivi</strong>
-
-            <p>
-              SGK tarafından yayımlanan haberleri
-              inceleyin ve filtreleyin.
-            </p>
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <section className="dashboard-section">
-
-      <div className="section-heading">
-        <div>
-          <span className="section-eyebrow">
-            SON İÇERİKLER
-          </span>
-
-          <h2>Son Haberler</h2>
-
-          <p>
-            Sisteme eklenen güncel haber kayıtları.
-          </p>
-        </div>
-
-        <button
-          className="text-button"
-          onClick={() => setActivePage("Haberler")}
-        >
-          Haberleri Gör →
-        </button>
-      </div>
-
-
-      <div className="recent-news-list">
-
-        {newsItems.slice(0, 3).map((news) => (
-          <div
-            className="recent-news-item"
-            key={news.id}
-          >
-            <div className="recent-news-date">
-              {news.date}
-            </div>
-
-            <div className="recent-news-content">
-              <span>{news.type}</span>
-
-              <h3>{news.title}</h3>
-
-              <p>{news.topic}</p>
-            </div>
-
-            <span className="news-arrow">
-              →
-            </span>
-          </div>
-        ))}
-
-      </div>
-
-    </section>
-  </>
+   <Dashboard />
+       </>
 )}
+
+
 
           {/* KURUMSAL YAPI */}
           {activePage === "Kurumsal Yapı" && (
