@@ -1,11 +1,21 @@
+import sgkIkon from "../assets/sgk-ikon.svg"
 
 function Header() {
   return (
     <header className="header">
       <div className="header-left">
+        <img
+        src={sgkIkon}
+        alt="SGK"
+        className="sgk-header-icon"
+        />
+
         <div className="header-title">
-          <h1>SGK Kurumsal Bilgi Sistemi</h1>
-          <p>Sosyal Güvenlik Kurumu</p>
+        
+            <h1>SGK Kurumsal Bilgi Sistemi</h1>
+  
+       
+          
         </div>
       </div>
 
@@ -13,18 +23,19 @@ function Header() {
         <span className="system-status">
           Sistem Aktif
         </span>
-
-        <div className="user-info">
-          <div className="user-avatar">S</div>
-
-          <div>
-            <strong>Stajyer</strong>
-            <span>Kurumsal Kullanıcı</span>
-          </div>
-        </div>
       </div>
     </header>
   )
 }
 
 export default Header
+
+
+
+
+
+
+
+
+
+

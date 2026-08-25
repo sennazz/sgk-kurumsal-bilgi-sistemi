@@ -1,15 +1,20 @@
-
 type SidebarProps = {
   activePage: string
   onNavigate: (page: string) => void
+  onLogout: () => void
 }
 
-function Sidebar({ activePage, onNavigate }: SidebarProps) {
+function Sidebar({
+  activePage,
+  onNavigate,
+  onLogout,
+}: SidebarProps) {
   const menuItems = [
     {
       name: "Ana Sayfa",
       icon: "⌂",
     },
+  
     {
       name: "Kurumsal Yapı",
       icon: "▦",
@@ -18,9 +23,22 @@ function Sidebar({ activePage, onNavigate }: SidebarProps) {
       name: "Haberler",
       icon: "▤",
     },
+    
     {
-      name: "Duyurular",
-      icon: "!",
+  name: "Haber Analizi",
+  icon: "▥",
+},
+{
+  name: "Sıkça Sorulan Sorular",
+  icon: "?",
+},
+{
+  name: "Duyurular",
+  icon: "!",
+},
+    {
+      name: "Kaydettiklerim",
+      icon: "☆",
     },
     {
       name: "Arşiv",
@@ -30,17 +48,8 @@ function Sidebar({ activePage, onNavigate }: SidebarProps) {
 
   return (
     <aside className="sidebar">
-      <div className="sidebar-brand">
-        <div className="logo">SGK</div>
 
-        <div className="brand-text">
-          <strong>Kurumsal Bilgi</strong>
-          <span>Sistemi</span>
-        </div>
-      </div>
-
-      <div className="sidebar-divider" />
-
+      
       <nav>
         <p className="menu-label">MENÜ</p>
 
@@ -52,19 +61,36 @@ function Sidebar({ activePage, onNavigate }: SidebarProps) {
             }`}
             onClick={() => onNavigate(item.name)}
           >
-            <span className="menu-icon">{item.icon}</span>
+            <span className="menu-icon">
+              {item.icon}
+            </span>
+
             <span>{item.name}</span>
           </button>
         ))}
       </nav>
 
+      {/* ÇIKIŞ ALANI */}
+
+      <div className="logout-area">
+
+        <button
+          className="logout-button"
+          onClick={onLogout}
+        >
+          <span className="logout-icon">↪</span>
+          <span>Çıkış Yap</span>
+        </button>
+
+      </div>
+
       <div className="sidebar-footer">
         <span>SGK</span>
         <p>Kurumsal Bilgi Sistemi</p>
       </div>
+
     </aside>
   )
 }
 
 export default Sidebar
-
