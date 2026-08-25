@@ -1,32 +1,52 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+# SGK Corporate Information System
 
-Currently, two official plugins are available:
+A web-based Corporate Information System prototype developed for the Social Security Institution (SGK) during my internship.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## About the Project
 
-## React Compiler
+The SGK Corporate Information System was developed to provide a structured and accessible digital interface for institutional information and news management.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The project brings together institutional information, organizational structure, news archive, news analysis, document archive, and frequently asked questions within a single web-based system.
 
-## Expanding the Oxlint configuration
+## Main Features
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+- User login and registration interface
+- Institutional information and organizational structure
+- News archive
+- News search, filtering, and pagination
+- News analysis dashboard
+- Document archive
+- Frequently Asked Questions (FAQ)
+- Saved news
+- Excel-based data integration
+- Responsive and user-friendly interface
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+## Technologies Used
+
+- React
+- TypeScript
+- Vite
+- HTML5
+- CSS3
+- JavaScript
+- Excel
+- LocalStorage
+
+## Project Purpose
+
+The main purpose of the project is to demonstrate how Management Information Systems concepts can be applied in an institutional environment.
+
+The project focuses on organizing institutional data, improving information accessibility, and presenting information through a structured and user-friendly web interface.
+
+## Internship Context
+
+This project was developed as part of my internship at the Social Security Institution (SGK). The development process included data organization, Excel-based data analysis, document management process analysis, and web application development.
+
+## Author
+
+**Sena Öz**  
+Management Information Systems  
+Turkish Aeronautical Association University
 
 See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
