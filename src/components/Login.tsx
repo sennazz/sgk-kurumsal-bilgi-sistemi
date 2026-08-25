@@ -4,6 +4,13 @@ type LoginProps = {
   onLogin: () => void
 }
 
+type RegisteredUser = {
+  fullName: string
+  username: string
+  email: string
+  password: string
+}
+
 function Login({ onLogin }: LoginProps) {
 
   const [page, setPage] = useState<"login" | "register" | "forgot">("login")
@@ -15,8 +22,12 @@ function Login({ onLogin }: LoginProps) {
   const [showPassword, setShowPassword] = useState(false)
 
   // YENİ KULLANICI
+  const [registerFullName, setRegisterFullName] = useState("")
+  const [registerUsername, setRegisterUsername] = useState("")
+  const [registerEmail, setRegisterEmail] = useState("")
   const [registerPassword, setRegisterPassword] = useState("")
   const [registerPasswordAgain, setRegisterPasswordAgain] = useState("")
+
   const [showRegisterPassword, setShowRegisterPassword] = useState(false)
   const [showRegisterPasswordAgain, setShowRegisterPasswordAgain] = useState(false)
 
@@ -34,6 +45,7 @@ function Login({ onLogin }: LoginProps) {
 
     event.preventDefault()
 
+    // Varsayılan demo hesabı
     if (
       username === "admin" &&
       password === "sgk2026"
@@ -51,14 +63,44 @@ function Login({ onLogin }: LoginProps) {
       }
 
       onLogin()
+      return
+    }
 
-    } else {
+    // Kayıtlı kullanıcıları kontrol et
+    const storedUsers = localStorage.getItem("registeredUsers")
 
-      setError(
-        "Kullanıcı adı veya şifre hatalı."
+    if (storedUsers) {
+
+      const users: RegisteredUser[] =
+        JSON.parse(storedUsers)
+
+      const user = users.find(
+        (registeredUser) =>
+          registeredUser.username === username &&
+          registeredUser.password === password
       )
 
+      if (user) {
+
+        setError("")
+
+        if (rememberMe) {
+          localStorage.setItem(
+            "rememberedUser",
+            username
+          )
+        } else {
+          localStorage.removeItem("rememberedUser")
+        }
+
+        onLogin()
+        return
+      }
     }
+
+    setError(
+      "Kullanıcı adı veya şifre hatalı."
+    )
   }
 
 
@@ -87,44 +129,99 @@ function Login({ onLogin }: LoginProps) {
   // =========================================
   // YENİ KULLANICI
   // =========================================
+const handleRegister = (
+  event: React.FormEvent<HTMLFormElement>
+) => {
 
-  const handleRegister = (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
+  event.preventDefault()
 
-    event.preventDefault()
+  setMessage("")
+  setError("")
 
-    setMessage("")
-    setError("")
-
-    // Şifre kuralları kontrolü
-    if (!isPasswordValid) {
-
-      setError(
-        "Lütfen şifre gereksinimlerini karşılayan yeni bir şifre oluşturun."
-      )
-
-      return
-    }
-
-    // Şifre eşleşme kontrolü
-    if (!passwordsMatch) {
-
-      setError(
-        "Şifreler eşleşmiyor. Lütfen tekrar kontrol edin."
-      )
-
-      return
-    }
-
-    // Başarılı
-    setMessage(
-      "Kullanıcı kaydı başarıyla oluşturuldu."
-    )
-
-    setError("")
+  if (
+    !registerFullName.trim() ||
+    !registerUsername.trim() ||
+    !registerEmail.trim()
+  ) {
+    setError("Lütfen tüm alanları doldurun.")
+    return
   }
 
+  if (!isPasswordValid) {
+    setError(
+      "Lütfen şifre gereksinimlerini karşılayan yeni bir şifre oluşturun."
+    )
+    return
+  }
+
+  if (!passwordsMatch) {
+    setError(
+      "Şifreler eşleşmiyor. Lütfen tekrar kontrol edin."
+    )
+    return
+  }
+
+  const storedUsers =
+    localStorage.getItem("registeredUsers")
+
+  const users: RegisteredUser[] =
+    storedUsers
+      ? JSON.parse(storedUsers)
+      : []
+
+  const usernameExists = users.some(
+    (user) =>
+      user.username.toLowerCase() ===
+      registerUsername.trim().toLowerCase()
+  )
+
+  if (
+    registerUsername.trim().toLowerCase() === "admin" ||
+    usernameExists
+  ) {
+    setError(
+      "Bu kullanıcı adı zaten kullanılıyor."
+    )
+    return
+  }
+
+  const newUser: RegisteredUser = {
+    fullName: registerFullName.trim(),
+    username: registerUsername.trim(),
+    email: registerEmail.trim(),
+    password: registerPassword
+  }
+
+  const updatedUsers = [
+    ...users,
+    newUser
+  ]
+
+  localStorage.setItem(
+    "registeredUsers",
+    JSON.stringify(updatedUsers)
+  )
+
+  // Kullanıcı adı login ekranına aktarılır
+  setUsername(registerUsername.trim())
+
+  // Formu temizle
+  setRegisterFullName("")
+  setRegisterUsername("")
+  setRegisterEmail("")
+  setRegisterPassword("")
+  setRegisterPasswordAgain("")
+
+  setMessage(
+    "Kullanıcı kaydı başarıyla oluşturuldu."
+  )
+
+  setTimeout(() => {
+    setPage("login")
+    setMessage("")
+  }, 1200)
+
+}
 
   // =========================================
   // ŞİFRE SIFIRLAMA
@@ -186,8 +283,6 @@ function Login({ onLogin }: LoginProps) {
             className="login-form"
           >
 
-            {/* KULLANICI ADI */}
-
             <div className="login-field">
 
               <label>
@@ -206,8 +301,6 @@ function Login({ onLogin }: LoginProps) {
 
             </div>
 
-
-            {/* ŞİFRE */}
 
             <div className="login-field">
 
@@ -253,8 +346,6 @@ function Login({ onLogin }: LoginProps) {
             </div>
 
 
-            {/* SEÇENEKLER */}
-
             <div className="login-options">
 
               <label className="remember-me">
@@ -293,8 +384,6 @@ function Login({ onLogin }: LoginProps) {
             </div>
 
 
-            {/* HATA MESAJI */}
-
             {error && (
 
               <div className="login-error">
@@ -303,8 +392,6 @@ function Login({ onLogin }: LoginProps) {
 
             )}
 
-
-            {/* GİRİŞ BUTONU */}
 
             <button
               type="submit"
@@ -315,8 +402,6 @@ function Login({ onLogin }: LoginProps) {
 
           </form>
 
-
-          {/* YENİ KULLANICI */}
 
           <div className="login-register">
 
@@ -332,6 +417,9 @@ function Login({ onLogin }: LoginProps) {
                 setError("")
                 setMessage("")
 
+                setRegisterFullName("")
+                setRegisterUsername("")
+                setRegisterEmail("")
                 setRegisterPassword("")
                 setRegisterPasswordAgain("")
 
@@ -399,8 +487,6 @@ function Login({ onLogin }: LoginProps) {
             className="login-form"
           >
 
-            {/* AD SOYAD */}
-
             <div className="login-field">
 
               <label>
@@ -410,12 +496,16 @@ function Login({ onLogin }: LoginProps) {
               <input
                 type="text"
                 placeholder="Ad ve soyadınızı girin"
+                value={registerFullName}
+                onChange={(event) =>
+                  setRegisterFullName(
+                    event.target.value
+                  )
+                }
               />
 
             </div>
 
-
-            {/* KULLANICI ADI */}
 
             <div className="login-field">
 
@@ -426,12 +516,16 @@ function Login({ onLogin }: LoginProps) {
               <input
                 type="text"
                 placeholder="Yeni kullanıcı adı"
+                value={registerUsername}
+                onChange={(event) =>
+                  setRegisterUsername(
+                    event.target.value
+                  )
+                }
               />
 
             </div>
 
-
-            {/* E-POSTA */}
 
             <div className="login-field">
 
@@ -442,12 +536,16 @@ function Login({ onLogin }: LoginProps) {
               <input
                 type="email"
                 placeholder="E-posta adresinizi girin"
+                value={registerEmail}
+                onChange={(event) =>
+                  setRegisterEmail(
+                    event.target.value
+                  )
+                }
               />
 
             </div>
 
-
-            {/* ŞİFRE */}
 
             <div className="login-field">
 
@@ -495,31 +593,64 @@ function Login({ onLogin }: LoginProps) {
               </div>
 
 
-              {/* ŞİFRE GEREKSİNİMLERİ */}
               <div className="password-requirements">
 
-  <span className={passwordRequirements.minLength ? "valid" : ""}>
-    {passwordRequirements.minLength ? "✓" : "•"} En az 8 karakter
-  </span>
+                <span
+                  className={
+                    passwordRequirements.minLength
+                      ? "valid"
+                      : ""
+                  }
+                >
+                  {passwordRequirements.minLength
+                    ? "✓"
+                    : "•"}{" "}
+                  En az 8 karakter
+                </span>
 
-  <span className={passwordRequirements.uppercase ? "valid" : ""}>
-    {passwordRequirements.uppercase ? "✓" : "•"} En az 1 büyük harf
-  </span>
+                <span
+                  className={
+                    passwordRequirements.uppercase
+                      ? "valid"
+                      : ""
+                  }
+                >
+                  {passwordRequirements.uppercase
+                    ? "✓"
+                    : "•"}{" "}
+                  En az 1 büyük harf
+                </span>
 
-  <span className={passwordRequirements.lowercase ? "valid" : ""}>
-    {passwordRequirements.lowercase ? "✓" : "•"} En az 1 küçük harf
-  </span>
+                <span
+                  className={
+                    passwordRequirements.lowercase
+                      ? "valid"
+                      : ""
+                  }
+                >
+                  {passwordRequirements.lowercase
+                    ? "✓"
+                    : "•"}{" "}
+                  En az 1 küçük harf
+                </span>
 
-  <span className={passwordRequirements.number ? "valid" : ""}>
-    {passwordRequirements.number ? "✓" : "•"} En az 1 rakam
-  </span>
+                <span
+                  className={
+                    passwordRequirements.number
+                      ? "valid"
+                      : ""
+                  }
+                >
+                  {passwordRequirements.number
+                    ? "✓"
+                    : "•"}{" "}
+                  En az 1 rakam
+                </span>
 
-</div>
+              </div>
 
-              
             </div>
 
-            {/* ŞİFRE TEKRAR */}
 
             <div className="login-field">
 
@@ -567,8 +698,6 @@ function Login({ onLogin }: LoginProps) {
               </div>
 
 
-              {/* ŞİFRE EŞLEŞME DURUMU */}
-
               {registerPasswordAgain.length > 0 && (
 
                 <div
@@ -590,8 +719,6 @@ function Login({ onLogin }: LoginProps) {
             </div>
 
 
-            {/* HATA MESAJI */}
-
             {error && (
 
               <div className="login-error">
@@ -600,8 +727,6 @@ function Login({ onLogin }: LoginProps) {
 
             )}
 
-
-            {/* BAŞARI MESAJI */}
 
             {message && (
 
@@ -612,8 +737,6 @@ function Login({ onLogin }: LoginProps) {
             )}
 
 
-            {/* KULLANICI OLUŞTUR */}
-
             <button
               type="submit"
               className="login-button"
@@ -623,8 +746,6 @@ function Login({ onLogin }: LoginProps) {
 
           </form>
 
-
-          {/* GERİ DÖN */}
 
           <div className="login-back">
 
@@ -712,8 +833,6 @@ function Login({ onLogin }: LoginProps) {
           </div>
 
 
-          {/* BAŞARI MESAJI */}
-
           {message && (
 
             <div className="login-success">
@@ -732,8 +851,6 @@ function Login({ onLogin }: LoginProps) {
 
         </form>
 
-
-        {/* GERİ DÖN */}
 
         <div className="login-back">
 
