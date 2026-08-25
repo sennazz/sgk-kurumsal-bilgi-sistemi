@@ -2766,3 +2766,57 @@ select {
 .remember-me span {
   line-height: 1;
 }
+.search-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 15px;
+  padding: 5px;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  background: #ffffff;
+  border: 1px solid #d9dee7;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-right: 18px;
+}
+
+.search-box input {
+  width: 180px;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding: 0 12px;
+  font-size: 13px;
+  color: #333;
+  background: transparent;
+}
+
+.search-box input::placeholder {
+  color: #9aa3b2;
+}
+
+.search-box button {
+  width: 38px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.search-box button:hover {
+  background: #f1f4f8;
+}
+.search-box:focus-within {
+  border-color: #2f6db2;
+  box-shadow: 0 0 0 2px rgba(47, 109, 178, 0.08);
+}

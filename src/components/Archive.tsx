@@ -4,11 +4,18 @@ import type { NewsItem } from "../data/news"
 
 type ArchiveProps = {
   newsItems: NewsItem[]
+  initialSearchTerm?: string
 }
 
-function Archive({ newsItems }: ArchiveProps) {
+function Archive({ 
+  newsItems,
+  initialSearchTerm = ""
+}: ArchiveProps) {
 
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm)
+  useEffect(() => {
+    setSearchTerm(initialSearchTerm)
+  }, [initialSearchTerm])
   const [selectedType, setSelectedType] = useState("Tümü")
   const [selectedYear, setSelectedYear] = useState("Tümü")
   const [selectedTopic, setSelectedTopic] = useState("Tümü")

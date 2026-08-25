@@ -3,11 +3,16 @@ import type { FAQItem } from "../data/faq"
 
 type FAQProps = {
   faqItems: FAQItem[]
+  initialSearchTerm?: string
 }
 
-function FAQ({ faqItems }: FAQProps) {
-  const [searchTerm, setSearchTerm] = useState("")
+function FAQ({ faqItems, initialSearchTerm }: FAQProps) {
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm || "")
+  
   const [openId, setOpenId] = useState<number | null>(null)
+  useEffect(() => {
+    setSearchTerm(initialSearchTerm || "")
+  }, [initialSearchTerm])
   const [currentPage, setCurrentPage] = useState(1)
 
   // HER SAYFADA 10 SORU

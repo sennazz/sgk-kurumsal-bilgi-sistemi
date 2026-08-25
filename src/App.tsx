@@ -31,8 +31,8 @@ function App() {
   // HABER DURUMLARI
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedType, setSelectedType] = useState("Tümü")
+  const [globalSearchTerm, setGlobalSearchTerm] = useState("")
   const [selectedNews, setSelectedNews] = useState<number | null>(null)
-
   const [newsItems, setNewsItems] = useState<NewsItem[]>([])
 
   // SSS VERİLERİ
@@ -100,6 +100,91 @@ function App() {
     setCurrentPage(1)
 
   }
+  const handleGlobalSearch = () => {
+  const search = globalSearchTerm.trim().toLowerCase()
+
+  if (!search) return
+
+  // Sayfa isimleri
+  if (
+    search.includes("kurumsal") ||
+    search.includes("organizasyon") ||
+    search.includes("birim")
+  ) {
+    setActivePage("Kurumsal Yapı")
+    return
+  }
+
+  if (
+    search.includes("sss") ||
+    search.includes("sıkça sorulan") ||
+    search.includes("sorular")
+  ) {
+    setActivePage("Sıkça Sorulan Sorular")
+    return
+  }
+
+  if (
+    search.includes("arşiv") ||
+    search.includes("arsiv")
+  ) {
+    setActivePage("Arşiv")
+    return
+  }
+
+  if (
+    search.includes("kaydet") ||
+    search.includes("favori")
+  ) {
+    setActivePage("Kaydettiklerim")
+    return
+  }
+
+  // Haberlerde ara
+  const matchingNews = newsItems.filter((news) => {
+    const text = `
+      ${news.title}
+      ${news.topic}
+      ${news.type}
+      ${news.description || ""}
+      ${news.source || ""}
+      ${news.relatedUnit || ""}
+    `.toLowerCase()
+
+    return text.includes(search)
+  })
+
+  if (matchingNews.length > 0) {
+    setSearchTerm(globalSearchTerm)
+    setSelectedNews(null)
+    setCurrentPage(1)
+    setActivePage("Haberler")
+    return
+  }
+
+  // FAQ'larda ara
+  const matchingFAQ = faqItems.filter((faq) => {
+    const text = `
+      ${faq.question || ""}
+      ${faq.answer || ""}
+      ${faq.category || ""}
+      ${faq.subCategory || ""}
+    `.toLowerCase()
+
+    return text.includes(search)
+  })
+
+  if (matchingFAQ.length > 0) {
+    setActivePage("Sıkça Sorulan Sorular")
+    return
+  }
+
+  // Hiçbir yerde bulunamazsa Haberler sayfasında göster
+  setSearchTerm(globalSearchTerm)
+  setSelectedNews(null)
+  setCurrentPage(1)
+  setActivePage("Haberler")
+}
 
   // SAYFA DEĞİŞTİR
   const handlePageChange = (page: number) => {
@@ -125,8 +210,11 @@ function App() {
     const search = searchTerm.toLowerCase()
 
     const matchesSearch =
-      news.title.toLowerCase().includes(search) ||
-      news.topic.toLowerCase().includes(search)
+  news.title.toLowerCase().includes(search) ||
+  news.topic.toLowerCase().includes(search) ||
+  news.type.toLowerCase().includes(search) ||
+  news.description?.toLowerCase().includes(search) ||
+  news.source?.toLowerCase().includes(search)
 
     const matchesType =
       selectedType === "Tümü" ||
@@ -172,8 +260,11 @@ function App() {
 
     <div className="app">
 
-      <Header />
-
+      <Header
+        searchTerm={globalSearchTerm}
+        setSearchTerm={setGlobalSearchTerm}
+        onSearch={handleGlobalSearch}
+      />
       <div className="layout">
 
         <Sidebar
@@ -846,6 +937,7 @@ function App() {
 
   <Archive
     newsItems={newsItems}
+    initialSearchTerm={globalSearchTerm}
   />
 
 )}
