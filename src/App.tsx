@@ -947,6 +947,7 @@ function App() {
 
             <FAQ
               faqItems={faqItems}
+              initialSearchTerm={globalSearchTerm}
             />
 
           )}
